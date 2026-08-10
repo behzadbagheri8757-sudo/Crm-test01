@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ویزیت — حبوبات و خشکبار باقری</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="./css/app.css">
+
+</head>
+<body>
+<header>
+  <h1>حبوبات و خشکبار باقری</h1>
+  <p>دفتر حساب — فروش، مشتریان، انبار، تامین‌کننده‌ها</p>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<button class="fab" id="fab" style="display:none;">+</button>
+<div id="modalRoot"></div>
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+
+<script src="./js/models.js"></script>
+<script src="./js/ui.js"></script>
+<script src="./js/db.js"></script>
+<script src="./js/calc.js"></script>
+<script src="./js/stock.js"></script>
+<script src="./js/payments.js"></script>
+<script src="./js/backup.js"></script>
+<script src="./js/nav.js"></script>
+
+
+<script>
+
+bootPage('visits', function(){
+  const main = document.getElementById('main');
+  main.innerHTML = pageShellNote('ویزیت و ارزیابی', 'اسکلت معماری مرحله ۱. امکانات کامل در مراحل بعدی منتقل می\u200cشوند.');
+});
+
+</script>
+</body>
+</html>

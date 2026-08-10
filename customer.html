@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>مشتری — حبوبات و خشکبار باقری</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="./css/app.css">
+
+</head>
+<body>
+<header>
+  <h1>حبوبات و خشکبار باقری</h1>
+  <p>دفتر حساب — فروش، مشتریان، انبار، تامین‌کننده‌ها</p>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<button class="fab" id="fab" style="display:none;">+</button>
+<div id="modalRoot"></div>
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+
+<script src="./js/models.js"></script>
+<script src="./js/ui.js"></script>
+<script src="./js/db.js"></script>
+<script src="./js/calc.js"></script>
+<script src="./js/stock.js"></script>
+<script src="./js/payments.js"></script>
+<script src="./js/backup.js"></script>
+<script src="./js/nav.js"></script>
+
+
+<script>
+
+bootPage('customers', function(){
+  const main = document.getElementById('main');
+  const id = getQueryParam('id');
+  if(!id){
+    main.innerHTML = `<div class="empty">شناسه مشتری مشخص نشده است.</div>
+      <div class="btn-row"><a class="btn secondary" href="./customers.html">بازگشت به لیست مشتریان</a></div>`;
+    return;
+  }
+  const c = data.customers.find(x => x.id === id);
+  if(!c){
+    main.innerHTML = `<div class="empty">مشتری با این شناسه پیدا نشد.</div>
+      <div class="btn-row"><a class="btn secondary" href="./customers.html">بازگشت به لیست مشتریان</a></div>`;
+    return;
+  }
+  const t = customerTotals(c.id);
+  const st = balanceStatusText(t.balance, toman(Math.abs(t.balance))+' ت');
+  const color = t.balance>0 ? 'accent-rust' : (t.balance<0 ? 'accent-olive' : 'accent-olive');
+  const invs = customerInvoices(c.id);
+  const pays = customerPayments(c.id);
+  const chks = customerChecks(c.id);
+  main.innerHTML = `
+    <div class="btn-row" style="margin-bottom:8px;">
+      <a class="btn secondary small" href="./customers.html">→ لیست مشتریان</a>
+    </div>
+    <h2 class="section-title">${esc(c.name)}</h2>
+    <div class="cards">
+      <div class="card wide">
+        <div class="label">مانده حساب</div>
+        <div class="value ${color}">${st}</div>
+      </div>
+      <div class="card"><div class="label">جمع فاکتورها</div><div class="value">${toman(t.invTotal)} ت</div></div>
+      <div class="card"><div class="label">جمع دریافت‌ها</div><div class="value">${toman(t.payTotal)} ت</div></div>
+      <div class="card"><div class="label">چک‌ها</div><div class="value">${toman(t.checkTotal)} ت</div></div>
+      <div class="card"><div class="label">مانده اولیه</div><div class="value">${toman(t.openingBalance)} ت</div></div>
+    </div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="label">مشخصات</div>
+      <div style="font-size:.9rem;line-height:1.8;">
+        ${c.ownerName ? 'صاحب: '+esc(c.ownerName)+'<br>' : ''}
+        ${c.phone ? 'تلفن: '+esc(c.phone)+'<br>' : ''}
+        ${c.region ? 'منطقه: '+esc(c.region)+'<br>' : ''}
+        ${c.route ? 'مسیر: '+esc(c.route)+'<br>' : ''}
+        ${c.address ? 'آدرس: '+esc(c.address)+'<br>' : ''}
+        ${c.note ? 'یادداشت: '+esc(c.note)+'<br>' : ''}
+      </div>
+    </div>
+    <h3 class="sub-title">خلاصه فعالیت</h3>
+    <div class="ledger-row"><span class="name">تعداد فاکتور</span><span class="filler"></span><span class="amount">${invs.length}</span></div>
+    <div class="ledger-row"><span class="name">تعداد دریافت/پرداخت</span><span class="filler"></span><span class="amount">${pays.length}</span></div>
+    <div class="ledger-row"><span class="name">تعداد چک</span><span class="filler"></span><span class="amount">${chks.length}</span></div>
+    <div class="ledger-row"><span class="name">ویزیت‌ها</span><span class="filler"></span><span class="amount">${(c.visits||[]).length}</span></div>
+    <div class="page-skeleton-note">صفحه اختصاصی مشتری — مرحله ۱: مشخصات و مانده با توابع موجود. لیست کامل فاکتور/پرداخت/ویزیت در مراحل بعد تکمیل می‌شود.</div>
+  `;
+});
+
+</script>
+</body>
+</html>

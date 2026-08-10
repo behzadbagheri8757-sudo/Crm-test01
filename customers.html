@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>مشتریان — حبوبات و خشکبار باقری</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="./css/app.css">
+
+</head>
+<body>
+<header>
+  <h1>حبوبات و خشکبار باقری</h1>
+  <p>دفتر حساب — فروش، مشتریان، انبار، تامین‌کننده‌ها</p>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<button class="fab" id="fab" style="display:none;">+</button>
+<div id="modalRoot"></div>
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+
+<script src="./js/models.js"></script>
+<script src="./js/ui.js"></script>
+<script src="./js/db.js"></script>
+<script src="./js/calc.js"></script>
+<script src="./js/stock.js"></script>
+<script src="./js/payments.js"></script>
+<script src="./js/backup.js"></script>
+<script src="./js/nav.js"></script>
+
+
+<script>
+
+bootPage('customers', function(){
+  const main = document.getElementById('main');
+  if(!data.customers.length){
+    main.innerHTML = pageShellNote('مشتریان', 'هنوز مشتری ثبت نشده است.');
+    return;
+  }
+  const rows = data.customers.slice().sort((a,b)=> (a.name||'').localeCompare(b.name||'', 'fa'));
+  main.innerHTML = `
+    <h2 class="section-title">مشتریان (${rows.length})</h2>
+    <div class="field"><input id="customer-search" placeholder="جستجوی نام مشتری..."></div>
+    <div id="customer-list"></div>
+  `;
+  function draw(q){
+    const qq = (q||'').trim().toLowerCase();
+    const list = rows.filter(c => !qq || (c.name||'').toLowerCase().includes(qq) || (c.phone||'').includes(qq) || (c.region||'').toLowerCase().includes(qq));
+    const el = document.getElementById('customer-list');
+    if(!list.length){ el.innerHTML = '<div class="empty">موردی پیدا نشد</div>'; return; }
+    el.innerHTML = list.map(c => {
+      const t = customerTotals(c.id);
+      const st = balanceStatusText(t.balance, toman(Math.abs(t.balance))+' ت');
+      const color = t.balance>0 ? 'accent-rust' : (t.balance<0 ? 'accent-olive' : '');
+      return `<a class="ledger-row" href="./customer.html?id=${encodeURIComponent(c.id)}" style="text-decoration:none;color:inherit;">
+        <span class="name">${esc(c.name)}<span class="sub">${esc(c.region||'')}${c.phone?' — '+esc(c.phone):''}</span></span>
+        <span class="filler"></span>
+        <span class="amount ${color}">${st}</span>
+      </a>`;
+    }).join('');
+  }
+  draw('');
+  document.getElementById('customer-search').addEventListener('input', e => draw(e.target.value));
+});
+
+</script>
+</body>
+</html>
