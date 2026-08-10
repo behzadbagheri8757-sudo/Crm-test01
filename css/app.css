@@ -419,3 +419,6 @@ a.dash-tile .dash-sub{
 }
 .dash-activity .ledger-row{cursor:default;}
 .dash-activity a.ledger-row{cursor:pointer;text-decoration:none;color:inherit;}
+
+/* Dashboard: hide horizontal nav — tiles replace it */
+body.page-dashboard #nav{display:none !important;}
