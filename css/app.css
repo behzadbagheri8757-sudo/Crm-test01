@@ -93,12 +93,13 @@ body{
 
 /* ===================== HEADER ===================== */
 header{
-  padding:calc(10px + var(--safe-top)) 16px 12px;
+  padding:calc(12px + var(--safe-top)) 16px 14px;
   text-align:center;
   background:var(--color-primary);
   border-bottom:none;
   color:#fff;
   position:relative;
+  z-index:5;
 }
 header h1{
   margin:0;
@@ -165,7 +166,7 @@ nav button:active{opacity:.85;}
 
 /* ===================== MAIN ===================== */
 main{
-  padding:14px 14px calc(96px + var(--safe-bottom));
+  padding:14px 14px calc(88px + var(--safe-bottom));
   max-width:720px;
   margin:0 auto;
 }
@@ -839,4 +840,257 @@ body[data-page="dashboard"] #nav{
   a.dash-tile{min-height:100px;}
   a.dash-tile .dash-title{font-size:.8rem;}
   .cards{gap:12px;}
+}
+
+
+/* ===================== TOP NAV: secondary on mobile ===================== */
+/* Bottom nav is primary on phone; keep top nav for larger screens / fallback */
+@media (max-width: 900px){
+  nav#nav{
+    display:none !important;
+  }
+}
+@media (min-width: 901px){
+  nav#nav{
+    display:flex !important;
+  }
+  .bottom-nav{ display:none !important; }
+  main{ padding-bottom: 40px; }
+}
+
+/* Dashboard already hid top nav */
+body.page-dashboard #nav{
+  display:none !important;
+}
+
+/* ===================== BOTTOM NAVIGATION ===================== */
+.bottom-nav{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  z-index:40;
+  display:flex;
+  align-items:stretch;
+  justify-content:space-around;
+  background:var(--color-surface);
+  border-top:1px solid var(--color-border);
+  box-shadow:0 -4px 20px rgba(11,31,58,.06);
+  padding:6px 4px calc(6px + var(--safe-bottom));
+  min-height:calc(56px + var(--safe-bottom));
+}
+.bottom-nav-item{
+  flex:1 1 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  min-height:48px;
+  padding:4px 2px;
+  border:none;
+  background:transparent;
+  color:var(--color-text-muted);
+  text-decoration:none;
+  font-family:inherit;
+  font-size:.62rem;
+  font-weight:600;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  border-radius:10px;
+  line-height:1.15;
+}
+.bottom-nav-item .bn-ico{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:24px; height:24px;
+}
+.bottom-nav-item .bn-ico svg{ display:block; }
+.bottom-nav-item .bn-label{
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  padding:0 1px;
+}
+.bottom-nav-item.active{
+  color:var(--color-primary);
+  font-weight:800;
+}
+.bottom-nav-item.active .bn-ico{
+  color:var(--color-primary);
+}
+.bottom-nav-item:active{
+  background:var(--color-surface-2);
+}
+
+/* ===================== MORE SHEET ===================== */
+.more-overlay{
+  position:fixed; inset:0;
+  background:rgba(11,31,58,.45);
+  z-index:45;
+  opacity:0;
+  transition:opacity .2s;
+}
+.more-overlay.show{ opacity:1; }
+.more-sheet{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  z-index:46;
+  background:var(--color-surface);
+  border-radius:20px 20px 0 0;
+  padding:10px 16px calc(16px + var(--safe-bottom));
+  max-height:78vh;
+  overflow-y:auto;
+  transform:translateY(110%);
+  transition:transform .22s ease;
+  box-shadow:0 -12px 40px rgba(11,31,58,.18);
+  -webkit-overflow-scrolling:touch;
+}
+.more-sheet.show{ transform:translateY(0); }
+.more-sheet-handle{
+  width:40px; height:4px;
+  border-radius:999px;
+  background:var(--color-border);
+  margin:4px auto 12px;
+}
+.more-sheet-title{
+  font-size:1rem;
+  font-weight:800;
+  color:var(--color-primary);
+  margin:0 0 12px;
+  text-align:center;
+}
+.more-sheet-list{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:12px;
+}
+.more-sheet-item{
+  display:block;
+  padding:14px 14px;
+  border-radius:12px;
+  text-decoration:none;
+  color:var(--color-text);
+  font-weight:700;
+  font-size:.92rem;
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+}
+.more-sheet-item.active{
+  background:var(--color-accent-soft);
+  border-color:var(--color-accent);
+  color:var(--color-accent-dark);
+}
+.more-sheet-item:active{
+  background:var(--color-surface-2);
+}
+.more-sheet-close{
+  width:100%;
+  margin-top:4px;
+}
+body.more-open{
+  overflow:hidden;
+}
+
+/* FAB above bottom nav */
+.fab{
+  bottom: calc(72px + var(--safe-bottom)) !important;
+  z-index: 35;
+}
+.toast{
+  bottom: calc(78px + var(--safe-bottom)) !important;
+}
+
+/* Dashboard grid: 2 columns on phone (closer to reference density) */
+@media (max-width: 419px){
+  .dash-grid{
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap:10px;
+  }
+  a.dash-tile{
+    min-height:100px;
+    padding:14px 8px;
+  }
+  a.dash-tile .dash-title{ font-size:.8rem; }
+  a.dash-tile .dash-ico{
+    width:44px; height:44px;
+  }
+  a.dash-tile .dash-ico svg{ width:22px; height:22px; }
+}
+
+
+/* ===================== DASHBOARD TARGET (read-only Prospect) ===================== */
+a.dash-target{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  background:linear-gradient(135deg, #0B1F3A 0%, #143056 100%);
+  color:#fff;
+  border-radius:16px;
+  padding:14px 16px;
+  margin:0 0 14px;
+  box-shadow:0 6px 18px rgba(11,31,58,.18);
+}
+a.dash-target.is-done{
+  background:linear-gradient(135deg, #178A63 0%, #20A879 100%);
+}
+.dash-target-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:6px;
+}
+.dash-target-title{
+  font-size:.78rem;
+  font-weight:700;
+  opacity:.9;
+}
+.dash-target-pct{
+  font-size:.85rem;
+  font-weight:800;
+}
+.dash-target-nums{
+  font-size:1.35rem;
+  font-weight:800;
+  letter-spacing:-.3px;
+  margin-bottom:8px;
+}
+.dash-target-bar{
+  height:6px;
+  border-radius:999px;
+  background:rgba(255,255,255,.22);
+  overflow:hidden;
+  margin-bottom:8px;
+}
+.dash-target-bar > span{
+  display:block;
+  height:100%;
+  background:#fff;
+  border-radius:999px;
+  min-width:0;
+}
+.dash-target-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-size:.75rem;
+  font-weight:600;
+  opacity:.95;
+}
+.dash-target-link{
+  font-size:.72rem;
+  opacity:.85;
+  font-weight:600;
+}
+.dash-target-body{
+  font-size:.9rem;
+  font-weight:700;
+  margin-top:4px;
+}
+.dash-target-done,
+.dash-target-remain{
+  font-weight:700;
 }
