@@ -171,3 +171,4 @@ function nextInvoiceNumber(){
   data.invoiceSeq = (data.invoiceSeq||1000) + 1;
   return data.invoiceSeq;
 }
+
