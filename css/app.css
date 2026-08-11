@@ -1094,3 +1094,65 @@ a.dash-target.is-done{
 .dash-target-remain{
   font-weight:700;
 }
+
+
+/* ===================== APP BACK (header, internal pages) ===================== */
+header.has-back{
+  position:relative;
+  padding-inline: 56px 16px; /* room for back control in RTL/LTR */
+}
+button.app-back{
+  position:absolute;
+  top:calc(50% + var(--safe-top) * 0.15);
+  inset-inline-start: 8px;
+  transform: translateY(-50%);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  min-width:44px;
+  min-height:44px;
+  padding:6px 10px;
+  border:none;
+  border-radius:12px;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-family:inherit;
+  font-size:.78rem;
+  font-weight:700;
+  cursor:pointer;
+  z-index:6;
+  -webkit-tap-highlight-color:transparent;
+}
+button.app-back:active{
+  background:rgba(255,255,255,.22);
+}
+button.app-back .app-back-ico{
+  font-size:1.35rem;
+  line-height:1;
+  font-weight:400;
+  display:inline-block;
+  /* In RTL, › points toward previous page visually when mirrored by direction */
+  transform: none;
+}
+html[dir="rtl"] button.app-back .app-back-ico{
+  /* keep › as-is; sits on the start (right) side */
+}
+button.app-back .app-back-txt{
+  max-width:4.5rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+@media (max-width:360px){
+  button.app-back .app-back-txt{ display:none; }
+  header.has-back{ padding-inline: 48px 12px; }
+}
+@media (min-width:901px){
+  button.app-back{
+    background:rgba(255,255,255,.1);
+  }
+}
+@media print{
+  button.app-back{ display:none !important; }
+}
