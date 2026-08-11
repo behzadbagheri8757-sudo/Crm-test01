@@ -2530,3 +2530,4 @@ function openSupplierDetail(sid){
     setTimeout(ensureQAUI, 0);
   }
 })();
+

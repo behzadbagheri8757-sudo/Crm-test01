@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { id: 'payments',  href: './payments.html',  label: 'پرداخت‌ها' },
   { id: 'checks',    href: './checks.html',    label: 'چک‌ها' },
   { id: 'visits',    href: './visits.html',    label: 'ویزیت' },
+  { id: 'prospects', href: './prospects.html', label: 'ارزیابی مغازه' },
   { id: 'reports',   href: './reports.html',   label: 'گزارش‌ها' },
   { id: 'settings',  href: './settings.html',  label: 'تنظیمات' },
 ];
