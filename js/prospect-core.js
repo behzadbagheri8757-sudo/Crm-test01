@@ -208,6 +208,7 @@ async function bootProspectPage(activeNavId, afterLoad){
   try{
     if(typeof loadData==='function') await loadData();
     if(typeof renderSharedNav==='function') renderSharedNav(activeNavId);
+    if(typeof renderBottomNav==='function') renderBottomNav(activeNavId);
     await loadProspectData();
     if(typeof afterLoad==='function') await afterLoad();
   }catch(e){
